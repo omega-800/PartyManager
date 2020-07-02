@@ -1,10 +1,17 @@
 package com.example.partymanager;
 
-public class Party {
+import android.os.Build;
+import android.text.TextUtils;
+
+import androidx.annotation.RequiresApi;
+
+import java.util.ArrayList;
+
+public class Party{
     String location;
     String date;
     String time;
-    String[] people;
+    ArrayList<String> people = new ArrayList<String>();
 
     public Party(){
     }
@@ -33,12 +40,17 @@ public class Party {
         time = t;
     }
 
-    public String[] getPeople(){
+    public ArrayList<String> getPeople(){
         return people;
     }
 
 
-    public void setPeople(String[] p){
+    public void setPeople(ArrayList<String> p){
         people = p;
+    }
+
+    public String toString(){
+        String s = "{ \"location\": \"" + location + "\", \"date\": \"" + date + "\", \"time\": \"" + time + "\", \"people\": \"" +  TextUtils.join(", ", people) + "\" }";
+        return s;
     }
 }

@@ -3,12 +3,13 @@ package com.example.partymanager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class CreateParty extends AppCompatActivity {
 
@@ -21,7 +22,9 @@ public class CreateParty extends AppCompatActivity {
         final EditText date = findViewById(R.id.date);
         final EditText time = findViewById(R.id.time2);
         final Button create = findViewById(R.id.create);
-        final String[] people = new String[]{"a", "b"};
+        final ArrayList<String> people = new ArrayList<String>();
+        people.add("a");
+        people.add("b");
 
         final Party party = new Party();
 
@@ -33,8 +36,12 @@ public class CreateParty extends AppCompatActivity {
                 party.setLocation(location.getText().toString());
                 party.setPeople(people);
 
+                SaveState saveState = new SaveState();
+                saveState.save(party.toString(), CreateParty.super.getApplication());
+                System.out.println(saveState.restore(CreateParty.super.getApplication()));
+
                 Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-                myIntent.putExtra("Party", (Parcelable) party);
+                myIntent.putExtra("Party", "1");
                 startActivity(myIntent);
             }
         });
