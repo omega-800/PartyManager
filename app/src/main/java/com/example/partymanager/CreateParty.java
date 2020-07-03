@@ -20,6 +20,7 @@ import java.util.ArrayList;
 public class CreateParty extends Activity {
 
     Singleton singleton = Singleton.getInstance( );
+    final Party party = new Party();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +34,6 @@ public class CreateParty extends Activity {
         final Button contacts = findViewById(R.id.contacts);
         final TextView ppl = findViewById(R.id.people);
         final ArrayList<String> people = new ArrayList<String>();
-        people.add("a");
-        people.add("b");
-
-        final Party party = new Party();
 
         contacts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,8 +70,9 @@ public class CreateParty extends Activity {
         if (c.moveToFirst()) {
             //int phoneIndex = getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
             //String num = c.getString(phoneIndex);
-            String num = "0";
+            String num = "0799422442";
             Toast.makeText(CreateParty.this, "Number=" + num, Toast.LENGTH_LONG).show();
+            party.addPerson(num);
         }
     }
 }

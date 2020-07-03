@@ -40,8 +40,11 @@ public class Party{
         return people;
     }
 
-
     public void setPeople(ArrayList<String> p){
         people = p;
+    }
+
+    public void addPerson(String p){
+        people.add(", "+p);
     }
 }

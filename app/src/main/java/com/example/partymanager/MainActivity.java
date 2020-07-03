@@ -1,13 +1,13 @@
 package com.example.partymanager;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.partymanager.data.Singleton;
 import com.example.partymanager.model.Party;
@@ -26,6 +26,20 @@ public class MainActivity extends Activity {
 
         final Button create = findViewById(R.id.create);
 
+        final RecyclerView rec = findViewById(R.id.recycler);
+        //final RecyclerView rec2 = findViewById(R.id.recycler2);
+
+        rec.setHasFixedSize(true);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rec.setLayoutManager(layoutManager);
+
+        MyAdapter mAdapter = new MyAdapter(partyList);
+        rec.setAdapter(mAdapter);
+
+
+
+
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -35,10 +49,5 @@ public class MainActivity extends Activity {
         });
 
         partyList = singleton.getParties();
-
-        System.out.println(partyList.size() + "  ###################################################################################################");
-        for(int i = 1; i < partyList.size(); i++){
-            System.out.println(partyList.get(i).getDate());
-        }
     }
 }
