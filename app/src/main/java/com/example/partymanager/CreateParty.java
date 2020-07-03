@@ -1,17 +1,25 @@
 package com.example.partymanager;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.partymanager.data.Singleton;
+import com.example.partymanager.model.Party;
 
 import java.util.ArrayList;
 
-public class CreateParty extends AppCompatActivity {
+public class CreateParty extends Activity {
+
+    Singleton singleton = Singleton.getInstance( );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +30,24 @@ public class CreateParty extends AppCompatActivity {
         final EditText date = findViewById(R.id.date);
         final EditText time = findViewById(R.id.time2);
         final Button create = findViewById(R.id.create);
+        final Button contacts = findViewById(R.id.contacts);
+        final TextView ppl = findViewById(R.id.people);
         final ArrayList<String> people = new ArrayList<String>();
         people.add("a");
         people.add("b");
 
         final Party party = new Party();
+
+        contacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final int REQUEST_CODE=1;
+                Uri uri = Uri.parse("content://contacts");
+                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+                startActivityForResult(intent, REQUEST_CODE);
+        }
+        });
 
         create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,14 +57,24 @@ public class CreateParty extends AppCompatActivity {
                 party.setLocation(location.getText().toString());
                 party.setPeople(people);
 
-                SaveState saveState = new SaveState();
-                saveState.save(party.toString(), CreateParty.super.getApplication());
-                System.out.println(saveState.restore(CreateParty.super.getApplication()));
+                singleton.addParty(party);
 
                 Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-                myIntent.putExtra("Party", "1");
                 startActivity(myIntent);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // check whether the result is ok
+        Uri contactData = data.getData();
+        Cursor c = getContentResolver().query(contactData, null, null, null, null);
+        if (c.moveToFirst()) {
+            //int phoneIndex = getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            //String num = c.getString(phoneIndex);
+            String num = "0";
+            Toast.makeText(CreateParty.this, "Number=" + num, Toast.LENGTH_LONG).show();
+        }
     }
 }

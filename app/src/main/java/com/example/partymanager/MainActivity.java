@@ -3,24 +3,21 @@ package com.example.partymanager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.google.gson.Gson;
+
+import com.example.partymanager.data.Singleton;
+import com.example.partymanager.model.Party;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     ArrayList<Party> partyList = new ArrayList<Party>();
-
-    SaveState saveState = new SaveState();
+    Singleton singleton = Singleton.getInstance( );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +34,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        String partiesJSON = saveState.restore(MainActivity.super.getApplication());
+        partyList = singleton.getParties();
 
-        Gson gson = new Gson();
-        Party[] partiesFU = gson.fromJson(partiesJSON, Party[].class);
-        for(Party partyy : partiesFU) {
-            System.out.println(partyy.toString());
-        }
-
-        Intent partyIntent = getIntent();
         System.out.println(partyList.size() + "  ###################################################################################################");
         for(int i = 1; i < partyList.size(); i++){
             System.out.println(partyList.get(i).getDate());

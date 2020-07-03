@@ -1,13 +1,9 @@
-package com.example.partymanager;
-
-import android.os.Build;
-import android.text.TextUtils;
-
-import androidx.annotation.RequiresApi;
+package com.example.partymanager.model;
 
 import java.util.ArrayList;
 
 public class Party{
+
     String location;
     String date;
     String time;
@@ -47,10 +43,5 @@ public class Party{
 
     public void setPeople(ArrayList<String> p){
         people = p;
-    }
-
-    public String toString(){
-        String s = "{ \"location\": \"" + location + "\", \"date\": \"" + date + "\", \"time\": \"" + time + "\", \"people\": \"" +  TextUtils.join(", ", people) + "\" }";
-        return s;
     }
 }
